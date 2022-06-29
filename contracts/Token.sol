@@ -13,8 +13,9 @@ Minting and rewords given for the stking is up to you.
 
 contract Token is ERC20 {
     constructor () ERC20("RewardsToken", "RT") {
-        // Maybe the minting shouldn't be so naive.
+        // Maybe the minting shouldn't be so naive. And define maximum supply and others before the constructor.
         // The rewards calculation has to be done here?
+
         _mint(address(this), 1000000 * 10**18);
     }
 }
