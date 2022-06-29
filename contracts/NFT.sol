@@ -22,7 +22,7 @@ contract NFT is ERC721Enumerable, Ownable {
 
 
 
-    constructor (string memory baseURI) ERC721("UnlockedNFT", "uNFT") {
+    constructor (string memory baseURI) ERC721("NotFunnyTokens", "NET") {
         _baseTokenURI = baseURI;
     }
 
