@@ -3,6 +3,7 @@
 pragma solidity^0.8.10;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 
 /*
@@ -83,4 +84,36 @@ contract Token is ERC20 {
     }
 
     // Rewards
+
+    mapping(address => uint256) rewards;
+
+    function rewardOf(address _stakeholder) public view returns(uint256) {
+        return rewards[_stakeholder];
+    }
+
+    function totalReward () public view returns(uint256) {
+        uint256 _totalReward = 0;
+        for (uint256 s=0; s<stakeholders.length; s += 1) {
+            _totalReward = _totalReward + rewards[stakeholders[s]];
+        }
+        return _totalReward;
+    }
+
+    // Calculate Rewards
+    // Here we can discuss the tokenomics
+    function calculateReward(address _stakeholder) public view returns(uint256) {
+        return stakes[_stakeholder] / 100;
+    }
+
+    function distributeRewards() public onlyOwner {
+        for (uint256 s = 0; s < stakeholders.length; s +=1) {
+            rewards[stakeholders[s]] = rewards[stakeholders[s]] + calculateReward(stakeholders[s]);
+        }
+    }
+
+    function withdrawReward() public {
+        uint256 reward = rewards[msg.sender];
+        rewards[msg.sender] = 0;
+        _mint(msg.sender, reward);
+    }
 }
